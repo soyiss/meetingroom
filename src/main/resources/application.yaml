@@ -1,3 +1,21 @@
 spring:
   application:
     name: meetingroom
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/meetingroom
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 1234
+
+  thymeleaf:
+    cache: false  # 개발 중엔 false로 해서 새로고침만으로 화면 반영
+
+server:
+  port: 8080
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.example.demo.domain
