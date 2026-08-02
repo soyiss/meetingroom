@@ -13,4 +13,11 @@
     ); -->
 
     <!-- 세팅, 테이블 생성, users에 샘플 데이터 몇 개 INSERT (회원가입 화면 없이 시작)-->
+
+    <!--  로그인 시 아이디로 회원 1명 조회-->
+    <select id="findByUsername" parameterType="String"
+            resultType="com.project.meetingroom.domain.Users">
+        select id,username,password  from users where username = #{username}
+    </select>
+
 </mapper>
