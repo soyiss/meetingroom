@@ -4,15 +4,95 @@
 <head>
     <meta charset="UTF-8">
     <title>reservation</title>
+
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            background:#f5f5f5;
+            margin:40px;
+        }
+
+        h1,h2{
+            color:#333;
+        }
+
+        table{
+            width:500px;
+            border-collapse:collapse;
+            background:white;
+            margin-bottom:20px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th{
+            background:#4e73df;
+            color:white;
+            padding:12px;
+        }
+
+        td{
+            border:1px solid #ddd;
+            padding:12px;
+            text-align:center;
+        }
+
+        tr:nth-child(even){
+            background:#f8f9fa;
+        }
+
+        form{
+            background:white;
+            width:500px;
+            padding:20px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom:30px;
+        }
+
+        label{
+            display:inline-block;
+            width:90px;
+            font-weight:bold;
+        }
+
+        input{
+            padding:8px;
+        }
+
+        button{
+            padding:8px 18px;
+            margin-right:10px;
+            cursor:pointer;
+        }
+
+        a{
+            text-decoration:none;
+            color:#4e73df;
+            font-weight:bold;
+        }
+
+        a:hover{
+            text-decoration:underline;
+        }
+
+        .error{
+            color:red;
+            margin-bottom:15px;
+        }
+
+    </style>
+
 </head>
 <body>
 
 <h1>회의실 예약</h1>
-<div th:if="${error}" style="color:red;">
+
+<div th:if="${error}" class="error">
     <p th:text="${error}"></p>
 </div>
 
-<table border="1" style="border-collapse: collapse;">
+<table>
+
     <tr>
         <th>회의실</th>
         <td th:text="${room.name}"></td>
@@ -22,9 +102,8 @@
         <th>수용 인원</th>
         <td th:text="${room.capacity}"></td>
     </tr>
-</table>
 
-<br>
+</table>
 
 <form action="/reservation" method="post">
 
@@ -54,19 +133,18 @@
 
     <button type="reset">초기화</button>
     <button type="submit">예약하기</button>
-</form>
 
-<br>
+</form>
 
 <h2>예약 현황</h2>
 
-<table border="1" style="border-collapse: collapse;">
+<table>
+
     <tr>
         <th>예약일</th>
         <th>시작</th>
         <th>종료</th>
         <th>예약자</th>
-
     </tr>
 
     <tr th:each="r : ${reservations}">
@@ -74,13 +152,14 @@
         <td th:text="${r.startTime}"></td>
         <td th:text="${r.endTime}"></td>
         <td th:text="${r.username}"></td>
-
     </tr>
+
 </table>
 
-
 <a href="/">메인으로</a>
+
 <script>
+
     // 오늘 이전 날짜 선택 불가
     const today = new Date().toISOString().split("T")[0];
     document.getElementById("reserveDate").min = today;
@@ -112,7 +191,8 @@
             return;
         }
     });
-</script>
-</body>
 
+</script>
+
+</body>
 </html>
