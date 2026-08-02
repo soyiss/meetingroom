@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.meetingroom.mapper.RoomsMapper">
+
+    <!--
+       CREATE TABLE room (
+                       id BIGSERIAL PRIMARY KEY,
+                       name VARCHAR(50) NOT NULL,
+                       capacity INT
+);
+     -->
+
+    <!-- 세팅, 테이블 생성, users에 샘플 데이터 몇 개 INSERT (회원가입 화면 없이 시작) -->
+</mapper>

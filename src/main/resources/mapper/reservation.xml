@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.meetingroom.mapper.ReservationMapper">
+
+    <!--
+        CREATE TABLE reservation (
+                             id BIGSERIAL PRIMARY KEY,
+                             room_id BIGINT REFERENCES rooms(id),
+                             user_id BIGINT REFERENCES users(id),
+                             reserve_date DATE NOT NULL,
+                             start_time TIME NOT NULL,
+                             end_time TIME NOT NULL,
+                             status VARCHAR(20) NOT NULL DEFAULT '예약완료'  →  예약완료 / 예약취소
+);
+        -->
+
+    <!-- 세팅, 테이블 생성, users에 샘플 데이터 몇 개 INSERT (회원가입 화면 없이 시작)-->
+</mapper>

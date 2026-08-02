@@ -10,6 +10,10 @@ spring:
 
   thymeleaf:
     cache: false  # 개발 중엔 false로 해서 새로고침만으로 화면 반영
+  sql:
+    init:
+      mode: always
+      #mode: never
 
 server:
   port: 8080
