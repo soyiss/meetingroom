@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 수정</title>
+</head>
+<body>
+
+<h1>예약 수정</h1>
+
+<!-- 중복예약 등 오류메시지 -->
+<div th:if="${error}" style="color:red;">
+    <p th:text="${error}"></p>
+</div>
+
+<form action="/reservation/update" method="post">
+
+    <!-- 수정할 예약번호 -->
+    <input type="hidden" name="id" th:value="${reservation.id}">
+
+    <!-- 회의실 번호 -->
+    <input type="hidden" name="roomId" th:value="${reservation.roomId}">
+
+    <!-- 예약자 번호 -->
+    <input type="hidden" name="userId" th:value="${reservation.userId}">
+
+    <!-- 예약상태 -->
+    <input type="hidden" name="status" th:value="${reservation.status}">
+
+    <table border="1" style="border-collapse: collapse;">
+
+        <tr>
+            <th>회의실 번호</th>
+            <td th:text="${reservation.roomId}"></td>
+        </tr>
+
+        <tr>
+            <th>예약 날짜</th>
+            <td>
+                <input type="date"
+                       name="reserveDate"
+                       th:value="${reservation.reserveDate}"
+                       required>
+            </td>
+        </tr>
+
+        <tr>
+            <th>시작 시간</th>
+            <td>
+                <input type="time"
+                       name="startTime"
+                       th:value="${reservation.startTime}"
+                       required>
+            </td>
+        </tr>
+
+        <tr>
+            <th>종료 시간</th>
+            <td>
+                <input type="time"
+                       name="endTime"
+                       th:value="${reservation.endTime}"
+                       required>
+            </td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <button type="submit">수정 완료</button>
+    <button type="reset">초기화</button>
+
+</form>
+
+<br>
+<hr>
+
+<h2>예약 현황</h2>
+
+<table border="1" style="border-collapse: collapse;">
+    <tr>
+        <th>예약일</th>
+        <th>시작시간</th>
+        <th>종료시간</th>
+        <th>예약자</th>
+    </tr>
+
+    <tr th:each="r : ${reservations}">
+        <td th:text="${r.reserveDate}"></td>
+        <td th:text="${r.startTime}"></td>
+        <td th:text="${r.endTime}"></td>
+        <td th:text="${r.username}"></td>
+    </tr>
+</table>
+
+
+<br>
+<a href="/myreservations">내 예약현황</a>
+&nbsp;
+<a href="/">메인으로</a>
+
+</body>
+</html>

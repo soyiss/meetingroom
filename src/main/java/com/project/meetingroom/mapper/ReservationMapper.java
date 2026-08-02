@@ -17,5 +17,11 @@ public interface ReservationMapper {
 
     List<Reservation> findByUserId(@Param("userId") Long userId);
 
+    Reservation findById(Long id);
+
+    int countOverlapForUpdate(Reservation reservation);
+
+    void updateReservation(Reservation reservation);
+
 
 }

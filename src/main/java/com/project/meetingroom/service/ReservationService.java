@@ -32,4 +32,19 @@ public class ReservationService {
         return reservationMapper.findByUserId(userId);
     }
 
+    public Reservation findById(Long id) {
+        return reservationMapper.findById(id);
+    }
+
+    public void updateReservation(Reservation reservation) {
+
+        int overlap = reservationMapper.countOverlapForUpdate(reservation);
+
+        if(overlap > 0){
+            throw new IllegalStateException("이미 예약된 시간입니다.");
+        }
+
+
+        reservationMapper.updateReservation(reservation);
+    }
 }

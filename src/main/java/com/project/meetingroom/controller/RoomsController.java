@@ -86,4 +86,43 @@ public class RoomsController {
         return "myreservations";
     }
 
+    // 수정화면으로 이동
+    @GetMapping("/reservation/update/{id}")
+    public String updateReservation(@PathVariable Long id,
+                                    Model model) {
+
+        Reservation reservation = reservationService.findById(id);
+
+        model.addAttribute("reservation", reservation);
+
+        model.addAttribute(
+                "reservations",
+                reservationService.findReservationsByRoomId(reservation.getRoomId())
+        );
+
+        return "updateReservation";
+    }
+
+
+
+    // 수정완료
+    @PostMapping("/reservation/update")
+    public String updateReservation(Reservation reservation,
+                                    Model model) {
+
+        try {
+
+            reservationService.updateReservation(reservation);
+
+        } catch (IllegalStateException e) {
+
+            model.addAttribute("reservation", reservation);
+            model.addAttribute("error", e.getMessage());
+
+            return "updateReservation";
+        }
+
+        return "redirect:/myreservations";
+    }
+
 }
