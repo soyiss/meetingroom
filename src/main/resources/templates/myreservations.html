@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>myreservation</title>
+</head>
+<body>
+<h1>내 예약현황</h1>
+
+<table border="1" style="border-collapse: collapse;">
+    <tr>
+        <th>회의실</th>
+        <th>예약일</th>
+        <th>시작시간</th>
+        <th>종료시간</th>
+        <th>상태</th>
+    </tr>
+
+    <tr th:each="r : ${reservations}">
+        <td th:text="${r.roomId}"></td>
+        <td th:text="${r.reserveDate}"></td>
+        <td th:text="${r.startTime}"></td>
+        <td th:text="${r.endTime}"></td>
+        <td th:text="${r.status}"></td>
+    </tr>
+</table>
+
+<br>
+
+<a href="/">메인으로</a>
+</body>
+</html>

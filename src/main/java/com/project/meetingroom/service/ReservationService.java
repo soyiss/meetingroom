@@ -6,6 +6,8 @@ import com.project.meetingroom.mapper.ReservationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
@@ -20,6 +22,14 @@ public class ReservationService {
         }
 
         reservationMapper.insertReservation(reservation);
+    }
+
+    public List<Reservation> findReservationsByRoomId(Long id) {
+        return reservationMapper.findReservationsByRoomId(id);
+    }
+
+    public List<Reservation> myReserve(Long userId) {
+        return reservationMapper.findByUserId(userId);
     }
 
 }

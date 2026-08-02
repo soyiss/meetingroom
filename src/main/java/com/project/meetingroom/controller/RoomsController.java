@@ -29,6 +29,10 @@ public class RoomsController {
         Rooms room = roomsService.findByRooms(id);
         model.addAttribute("room", room);
 
+        model.addAttribute(
+                "reservations",
+                reservationService.findReservationsByRoomId(id)
+        );
         return "rooms";
     }
 
@@ -63,5 +67,23 @@ public class RoomsController {
         return "redirect:/";
     }
 
+    @GetMapping("/myreservations")
+    public String myReservations(HttpSession session,
+                                 Model model) {
+
+        Users loginMember =
+                (Users) session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute(
+                "reservations",
+                reservationService.myReserve(loginMember.getId())
+        );
+
+        return "myreservations";
+    }
 
 }

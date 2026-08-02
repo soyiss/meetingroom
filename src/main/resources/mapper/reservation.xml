@@ -31,6 +31,8 @@
 
     </select>
 
+
+    <!-- 예약시간 넣기   -->
     <insert id="insertReservation"
             parameterType="com.project.meetingroom.domain.Reservation">
 
@@ -54,4 +56,53 @@
             )
 
     </insert>
+
+    <!-- 예약완료된 시간 조회 -->
+    <select id="findReservationsByRoomId"
+            parameterType="long"
+            resultType="com.project.meetingroom.domain.Reservation">
+
+
+        SELECT
+            a.id,
+            a.room_id,
+            a.user_id,
+            a.reserve_date,
+            a.start_time,
+            a.end_time,
+            b.username,
+            a.status
+        FROM reservation a
+                 JOIN users b
+                      ON a.user_id = b.id
+        WHERE a.room_id = #{id}
+          AND a.status = '예약완료'
+        ORDER BY a.reserve_date, a.start_time
+
+    </select>
+
+
+    <!-- 내 예약현황조회  -->
+    <select id="findByUserId"
+            parameterType="long"
+            resultType="com.project.meetingroom.domain.Reservation">
+
+        SELECT
+            a.id,
+            a.room_id,
+            a.user_id,
+            a.reserve_date,
+            a.start_time,
+            a.end_time,
+            b.username,
+            a.status
+        FROM reservation a
+                 JOIN users b
+                      ON a.user_id = b.id
+        WHERE a.user_id = #{userId}
+          AND a.status = '예약완료'
+        ORDER BY a.reserve_date, a.start_time
+
+    </select>
+
 </mapper>
