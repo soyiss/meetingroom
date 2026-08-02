@@ -47,4 +47,10 @@ public class ReservationService {
 
         reservationMapper.updateReservation(reservation);
     }
+
+    public void deleteReservation(Long id) {
+        reservationMapper.deleteReservation(id);
+    }
+
+
 }

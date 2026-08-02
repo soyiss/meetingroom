@@ -125,4 +125,13 @@ public class RoomsController {
         return "redirect:/myreservations";
     }
 
+    // 삭제기능
+    @GetMapping("/reservation/delete/{id}")
+    public String deleteReservation(@PathVariable Long id) {
+
+        reservationService.deleteReservation(id);
+
+        return "redirect:/myreservations";
+    }
+
 }

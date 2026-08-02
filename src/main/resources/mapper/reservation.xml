@@ -144,4 +144,13 @@
 
     </select>
 
+
+    <delete id="deleteReservation"
+            parameterType="long">
+
+        DELETE
+        FROM reservation
+        WHERE id = #{id}
+
+    </delete>
 </mapper>
