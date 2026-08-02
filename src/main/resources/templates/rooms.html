@@ -8,6 +8,9 @@
 <body>
 
 <h1>회의실 예약</h1>
+<div th:if="${error}" style="color:red;">
+    <p th:text="${error}"></p>
+</div>
 
 <table border="1" style="border-collapse: collapse;">
     <tr>

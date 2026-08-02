@@ -16,6 +16,42 @@
                              status VARCHAR(20) NOT NULL DEFAULT '예약완료'  →  예약완료 / 예약취소
 );
         -->
+    <!--예약하려는 시간에 이미 예약이 있는지 검사-->
+    <select id="countOverlap"
+            parameterType="com.project.meetingroom.domain.Reservation"
+            resultType="int">
 
-    <!-- 세팅, 테이블 생성, users에 샘플 데이터 몇 개 INSERT (회원가입 화면 없이 시작)-->
+        SELECT COUNT(*)
+        FROM reservation
+        WHERE room_id = #{roomId}
+          AND reserve_date = #{reserveDate}
+          AND status = '예약완료'
+          AND start_time <![CDATA[ < ]]> #{endTime}
+          AND end_time <![CDATA[ > ]]> #{startTime}
+
+    </select>
+
+    <insert id="insertReservation"
+            parameterType="com.project.meetingroom.domain.Reservation">
+
+        INSERT INTO reservation
+        (
+            room_id,
+            user_id,
+            reserve_date,
+            start_time,
+            end_time,
+            status
+        )
+        VALUES
+            (
+                #{roomId},
+                #{userId},
+                #{reserveDate},
+                #{startTime},
+                #{endTime},
+                '예약완료'
+            )
+
+    </insert>
 </mapper>
