@@ -33,7 +33,7 @@
 
     <div>
         <label>예약 날짜</label>
-        <input type="date" name="reserveDate" required>
+        <input type="date" name="reserveDate" id="reserveDate" required>
     </div>
 
     <br>
@@ -80,6 +80,39 @@
 
 
 <a href="/">메인으로</a>
+<script>
+    // 오늘 이전 날짜 선택 불가
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("reserveDate").min = today;
 
+    // 예약 유효성 검사
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", function(e){
+
+        const reserveDate = document.getElementById("reserveDate").value;
+        const start = document.querySelector("[name='startTime']").value;
+        const end = document.querySelector("[name='endTime']").value;
+
+        // 시작시간 >= 종료시간
+        if(start >= end){
+            alert("종료시간은 시작시간보다 늦어야 합니다.");
+            e.preventDefault();
+            return;
+        }
+
+        // 오늘인데 현재시간보다 이전 예약 불가
+        const now = new Date();
+        const currentDate = now.toISOString().split("T")[0];
+        const currentTime = now.toTimeString().substring(0,5);
+
+        if(reserveDate === currentDate && start < currentTime){
+            alert("현재 시간보다 이전은 예약할 수 없습니다.");
+            e.preventDefault();
+            return;
+        }
+    });
+</script>
 </body>
+
 </html>
