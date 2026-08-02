@@ -3,6 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>meetingroom</title>
+
+    <style>
+
+        table{
+            width:450px;
+            border-collapse:collapse;
+            margin-top:15px;
+        }
+
+        th,td{
+            border:2px solid black;
+            padding:12px;
+            text-align:center;
+        }
+
+        th{
+            background:#f2f2f2;
+        }
+
+    </style>
 </head>
 <body>
     <h1>회의실 예약시스템 🏦</h1>
@@ -10,6 +30,27 @@
     <!-- 세션에 loginMember 가 있으면 로그인 상태로 판단     -->
     <div th:if ="${session.loginMember} !=null">
         <p th:text="${session.loginMember.username}+'님 반갑습니다.'"></p>
+
+        <h3>회의실 목록</h3>
+        <table border="3" style="border-collapse: collapse;">
+            <tr>
+                <th>회의실 명</th>
+                <th>수용 인원</th>
+                <th>예약</th>
+            </tr>
+
+            <tr th:each="room : ${rooms}">
+                <td th:text="${room.name}"></td>
+                <td th:text="${room.capacity}"></td>
+                <td>
+                    <a th:href="@{/rooms/{id}(id=${room.id})}">
+                        예약
+                    </a>
+                </td>
+
+            </tr>
+        </table>
+
         <a href="/logout">로그아웃</a>
     </div>
 

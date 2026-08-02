@@ -13,5 +13,17 @@
 );
      -->
 
-    <!-- 세팅, 테이블 생성, users에 샘플 데이터 몇 개 INSERT (회원가입 화면 없이 시작) -->
+    <!--  회의실목록전체조회-->
+    <select id="findAllRooms"
+            resultType="com.project.meetingroom.domain.Rooms">
+        select id,name,capacity  from rooms
+    </select>
+
+    <!--  회의실 1개 조회 -->
+    <select id="findByRooms"
+            resultType="com.project.meetingroom.domain.Rooms">
+        select id,name,capacity  from rooms where id = #{id}
+    </select>
+
+
 </mapper>

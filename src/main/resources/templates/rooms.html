@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>reservation</title>
+</head>
+<body>
+
+<h1>회의실 예약</h1>
+
+<table border="1" style="border-collapse: collapse;">
+    <tr>
+        <th>회의실</th>
+        <td th:text="${room.name}"></td>
+    </tr>
+
+    <tr>
+        <th>수용 인원</th>
+        <td th:text="${room.capacity}"></td>
+    </tr>
+</table>
+
+<br>
+
+<form action="/reservation" method="post">
+
+    <!-- 어느 회의실인지 같이 전송 -->
+    <input type="hidden" name="roomId" th:value="${room.id}">
+
+    <div>
+        <label>예약 날짜</label>
+        <input type="date" name="reserveDate" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>시작 시간</label>
+        <input type="time" name="startTime" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>종료 시간</label>
+        <input type="time" name="endTime" required>
+    </div>
+
+    <br>
+
+    <button type="reset">초기화</button>
+    <button type="submit">예약하기</button>
+</form>
+
+<br>
+
+<a href="/">메인으로</a>
+
+</body>
+</html>

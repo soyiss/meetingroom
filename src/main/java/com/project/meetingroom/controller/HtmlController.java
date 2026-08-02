@@ -2,6 +2,7 @@ package com.project.meetingroom.controller;
 
 
 import com.project.meetingroom.domain.Users;
+import com.project.meetingroom.service.RoomsService;
 import com.project.meetingroom.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class HtmlController {
 
     private final UserService userService;
+    private final RoomsService roomsService;
 
     @GetMapping("/")
-    public String indexHtml() {
+    public String indexHtml(Model model, HttpSession session) {
+
+        if (session.getAttribute("loginMember") != null) {
+            model.addAttribute("rooms", roomsService.findAllRooms());
+        }
         return "index";
 
     }
