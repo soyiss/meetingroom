@@ -57,10 +57,22 @@ public class RoomsController {
 
         } catch (IllegalStateException e) {
 
-            model.addAttribute("room",
-                    roomsService.findByRooms(reservation.getRoomId()));
+            // 회의실 정보 다시 조회
+            model.addAttribute(
+                    "room",
+                    roomsService.findByRooms(reservation.getRoomId())
+            );
 
+            // 에러 메시지 전달
             model.addAttribute("error", e.getMessage());
+
+            // 예약 현황도 다시 조회
+            model.addAttribute(
+                    "reservations",
+                    reservationService.findReservationsByRoomId(
+                            reservation.getRoomId()
+                    )
+            );
 
             return "rooms";
         }
