@@ -92,7 +92,8 @@
         </td>
 
         <td>
-            <a th:href="@{/reservation/delete/{id}(id=${r.id})}">
+            <a th:href="@{/reservation/delete/{id}(id=${r.id})}"
+               onclick="return confirm('정말 예약을 삭제하시겠습니까?');">
                 삭제
             </a>
         </td>
