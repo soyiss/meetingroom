@@ -1,25 +1,25 @@
 INSERT INTO users(username, password)
-VALUES ('이상무', '1234');
+VALUES ('test1', '1234');
 
 INSERT INTO users(username, password)
-VALUES ('권부장', '1234');
+VALUES ('test2', '1234');
 
 INSERT INTO users(username, password)
-VALUES ('최이사', '1234');
+VALUES ('test3', '1234');
 
 INSERT INTO users(username, password)
-VALUES ('윤차장', '1234');
+VALUES ('test4', '1234');
 
 INSERT INTO users(username, password)
-VALUES ('박차장', '1234');
+VALUES ('test5', '1234');
 
 
 
 INSERT INTO rooms(name, capacity)
-VALUES ('회의실A', 10);
+VALUES ('소회의실', 4);
 
 INSERT INTO rooms(name, capacity)
-VALUES ('회의실B', 20);
+VALUES ('중회의실', 10);
 
 INSERT INTO rooms(name, capacity)
-VALUES ('회의실C', 30);
+VALUES ('대회의실', 30);
