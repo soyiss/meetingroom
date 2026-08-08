@@ -21,11 +21,15 @@ public class HtmlController {
     @GetMapping("/")
     public String indexHtml(Model model, HttpSession session) {
 
-        if (session.getAttribute("loginMember") != null) {
-            model.addAttribute("rooms", roomsService.findAllRooms());
+        // 로그인하지 않은 경우 로그인 페이지로 이동
+        if (session.getAttribute("loginMember") == null) {
+            return "redirect:/login";
         }
-        return "index";
 
+        // 로그인한 경우 회의실 목록 조회
+        model.addAttribute("rooms", roomsService.findAllRooms());
+
+        return "index";
     }
 
     @GetMapping("/login")
