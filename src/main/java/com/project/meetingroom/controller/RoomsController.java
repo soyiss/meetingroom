@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class RoomsController {
     }
 
     @PostMapping("/reservation")
-    public String reservation(Reservation reservation, HttpSession session, Model model) {
+    public String reservation(Reservation reservation, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 
         // 로그인한 사용자 가져오기
         Users loginMember = (Users) session.getAttribute("loginMember");
@@ -64,7 +65,13 @@ public class RoomsController {
             return "rooms";
         }
 
-        return "redirect:/";
+        // 예약 성공 메시지 전달
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "예약이 완료되었습니다."
+        );
+
+        return  "redirect:/myreservations";
     }
 
     @GetMapping("/myreservations")
@@ -108,7 +115,7 @@ public class RoomsController {
     // 수정완료
     @PostMapping("/reservation/update")
     public String updateReservation(Reservation reservation,
-                                    Model model) {
+                                    Model model, RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -122,15 +129,25 @@ public class RoomsController {
             return "updateReservation";
         }
 
+        // 예약 수정 메시지 전달
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "수정이 완료되었습니다."
+        );
         return "redirect:/myreservations";
     }
 
     // 삭제기능
     @GetMapping("/reservation/delete/{id}")
-    public String deleteReservation(@PathVariable Long id) {
+    public String deleteReservation(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 
         reservationService.deleteReservation(id);
 
+        // 예약 삭제 메시지 전달
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "삭제가 완료되었습니다."
+        );
         return "redirect:/myreservations";
     }
 

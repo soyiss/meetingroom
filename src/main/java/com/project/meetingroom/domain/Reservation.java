@@ -16,6 +16,7 @@ public class Reservation {
     private LocalTime  endTime;
     private String status;
     private String username;
+    private String roomName;
 
 
 }

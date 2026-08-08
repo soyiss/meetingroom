@@ -62,7 +62,10 @@
 <body>
 
 <h1>내 예약현황</h1>
-
+<div th:if="${message}"
+     style="color:green;">
+    <p th:text="${message}"></p>
+</div>
 <table>
 
     <tr>
@@ -76,7 +79,7 @@
     </tr>
 
     <tr th:each="r : ${reservations}">
-        <td th:text="${r.roomId}"></td>
+        <td th:text="${r.roomName}"></td>
         <td th:text="${r.reserveDate}"></td>
         <td th:text="${r.startTime}"></td>
         <td th:text="${r.endTime}"></td>

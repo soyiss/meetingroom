@@ -57,11 +57,9 @@
 
     </insert>
 
-    <!-- 예약완료된 시간 조회 -->
     <select id="findReservationsByRoomId"
             parameterType="long"
             resultType="com.project.meetingroom.domain.Reservation">
-
 
         SELECT
             a.id,
@@ -70,11 +68,14 @@
             a.reserve_date,
             a.start_time,
             a.end_time,
+            r.name AS roomName,
             b.username,
             a.status
         FROM reservation a
                  JOIN users b
                       ON a.user_id = b.id
+                 JOIN rooms r
+                      ON a.room_id = r.id
         WHERE a.room_id = #{id}
           AND a.status = '예약완료'
         ORDER BY a.reserve_date, a.start_time
@@ -94,11 +95,14 @@
             a.reserve_date,
             a.start_time,
             a.end_time,
+            r.name AS roomName,
             b.username,
             a.status
         FROM reservation a
                  JOIN users b
                       ON a.user_id = b.id
+                 JOIN rooms r
+                      ON a.room_id = r.id
         WHERE a.user_id = #{userId}
           AND a.status = '예약완료'
         ORDER BY a.reserve_date, a.start_time
@@ -106,13 +110,24 @@
     </select>
 
 
+    <!-- 예약 수정 화면 조회 -->
     <select id="findById"
             parameterType="long"
             resultType="com.project.meetingroom.domain.Reservation">
 
-        SELECT *
-        FROM reservation
-        WHERE id = #{id}
+        SELECT
+            a.id,
+            a.room_id,
+            a.user_id,
+            a.reserve_date,
+            a.start_time,
+            a.end_time,
+            r.name AS roomName,
+            a.status
+        FROM reservation a
+                 JOIN rooms r
+                      ON a.room_id = r.id
+        WHERE a.id = #{id}
 
     </select>
 
