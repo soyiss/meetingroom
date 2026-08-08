@@ -1,50 +1,83 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>myreservation</title>
 
     <style>
 
+        /* 전체 화면 */
         body{
             font-family: Arial, sans-serif;
-            background:#f5f5f5;
-            margin:40px;
+            background:#f5f7fb;
+            margin:0;
+            padding:40px;
+            color:#333;
         }
 
+        /* 전체 영역을 가운데 정렬 */
+        .container{
+            width:1000px;
+            margin:0 auto;
+        }
+
+        /* 제목 */
         h1{
-            color:#333;
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        /* 예약 수정/삭제 완료 메시지 */
+        .message{
+            background:#e8f5e9;
+            color:#198754;
+            padding:12px;
+            border-radius:8px;
+            text-align:center;
             margin-bottom:20px;
         }
 
+        /* 예약 목록 카드 */
+        .reservation-list{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 테이블 */
         table{
-            width:800px;
+            width:100%;
             border-collapse:collapse;
             background:white;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom:20px;
         }
 
+        /* 테이블 헤더 */
         th{
             background:#4e73df;
             color:white;
             padding:12px;
         }
 
+        /* 테이블 내용 */
         td{
             border:1px solid #ddd;
             padding:12px;
             text-align:center;
         }
 
+        /* 짝수 행 배경색 */
         tr:nth-child(even){
             background:#f8f9fa;
         }
 
+        /* 마우스를 올렸을 때 */
         tr:hover{
             background:#eef3ff;
         }
 
+        /* 링크 기본 스타일 */
         a{
             text-decoration:none;
             color:#4e73df;
@@ -56,53 +89,125 @@
             text-decoration:underline;
         }
 
+        /* 수정 / 삭제 버튼 */
+        .action-button{
+            display:inline-block;
+            padding:7px 13px;
+            border-radius:5px;
+            margin:0 2px;
+        }
+
+        /* 수정 버튼 */
+        .edit-button{
+            background:#4e73df;
+            color:white;
+        }
+
+        .edit-button:hover{
+            background:#365fc7;
+            text-decoration:none;
+        }
+
+        /* 삭제 버튼 */
+        .delete-button{
+            background:#dc3545;
+            color:white;
+        }
+
+        .delete-button:hover{
+            background:#bb2d3b;
+            text-decoration:none;
+        }
+
+        /* 메인으로 */
+        .menu{
+            text-align:center;
+            margin-top:25px;
+        }
+
+        .menu a{
+            color:#4e73df;
+            font-weight:bold;
+        }
+
     </style>
 
 </head>
+
 <body>
 
-<h1>내 예약현황</h1>
-<div th:if="${message}"
-     style="color:green;">
-    <p th:text="${message}"></p>
+<div class="container">
+
+    <h1>내 예약현황</h1>
+
+
+    <!-- 예약 수정/삭제 완료 메시지 -->
+    <div th:if="${message}" class="message">
+        <p th:text="${message}"></p>
+    </div>
+
+
+    <!-- 예약 목록 -->
+    <div class="reservation-list">
+
+        <table>
+
+            <tr>
+                <th>회의실</th>
+                <th>예약일</th>
+                <th>시작시간</th>
+                <th>종료시간</th>
+                <th>상태</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+
+
+            <tr th:each="r : ${reservations}">
+
+                <td th:text="${r.roomName}"></td>
+
+                <td th:text="${r.reserveDate}"></td>
+
+                <td th:text="${r.startTime}"></td>
+
+                <td th:text="${r.endTime}"></td>
+
+                <td th:text="${r.status}"></td>
+
+
+                <td>
+                    <a class="action-button edit-button"
+                       th:href="@{/reservation/update/{id}(id=${r.id})}">
+                        수정
+                    </a>
+                </td>
+
+
+                <td>
+                    <a class="action-button delete-button"
+                       th:href="@{/reservation/delete/{id}(id=${r.id})}"
+                       onclick="return confirm('정말 예약을 삭제하시겠습니까?');">
+                        삭제
+                    </a>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <br>
+
+    <!-- 메인으로 -->
+    <div class="menu">
+        <a href="/">메인으로</a>
+    </div>
+
 </div>
-<table>
-
-    <tr>
-        <th>회의실</th>
-        <th>예약일</th>
-        <th>시작시간</th>
-        <th>종료시간</th>
-        <th>상태</th>
-        <th>수정</th>
-        <th>삭제</th>
-    </tr>
-
-    <tr th:each="r : ${reservations}">
-        <td th:text="${r.roomName}"></td>
-        <td th:text="${r.reserveDate}"></td>
-        <td th:text="${r.startTime}"></td>
-        <td th:text="${r.endTime}"></td>
-        <td th:text="${r.status}"></td>
-
-        <td>
-            <a th:href="@{/reservation/update/{id}(id=${r.id})}">
-                수정
-            </a>
-        </td>
-
-        <td>
-            <a th:href="@{/reservation/delete/{id}(id=${r.id})}"
-               onclick="return confirm('정말 예약을 삭제하시겠습니까?');">
-                삭제
-            </a>
-        </td>
-
-    </tr>
-
-</table>
-
-<a href="/">메인으로</a>
 
 </body>
+
 </html>
