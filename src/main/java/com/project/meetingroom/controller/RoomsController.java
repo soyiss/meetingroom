@@ -127,15 +127,50 @@ public class RoomsController {
     // 수정화면으로 이동
     @GetMapping("/reservation/update/{id}")
     public String updateReservation(@PathVariable Long id,
-                                    Model model) {
+                                    HttpSession session,
+                                    Model model,
+                                    RedirectAttributes redirectAttributes) {
 
-        Reservation reservation = reservationService.findById(id);
+        Users loginMember =
+                (Users) session.getAttribute("loginMember");
+
+        // 로그인하지 않은 경우
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+
+        Reservation reservation =
+                reservationService.findById(id);
+
+        // 예약이 존재하지 않는 경우
+        if (reservation == null) {
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "존재하지 않는 예약입니다."
+            );
+
+            return "redirect:/myreservations";
+        }
+
+        // 관리자 또는 예약자 본인만 수정 가능
+        if (!"admin".equals(loginMember.getUsername())
+                && !loginMember.getId().equals(reservation.getUserId())) {
+
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "본인의 예약만 수정할 수 있습니다."
+            );
+
+            return "redirect:/myreservations";
+        }
 
         model.addAttribute("reservation", reservation);
 
         model.addAttribute(
                 "reservations",
-                reservationService.findReservationsByRoomId(reservation.getRoomId())
+                reservationService.findReservationsByRoomId(
+                        reservation.getRoomId()
+                )
         );
 
         return "updateReservation";
@@ -145,8 +180,49 @@ public class RoomsController {
 
     // 수정완료
     @PostMapping("/reservation/update")
-    public String updateReservation(Reservation reservation,
-                                    Model model, RedirectAttributes redirectAttributes) {
+    public String updateReservation(
+            Reservation reservation,
+            HttpSession session,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        Users loginMember =
+                (Users) session.getAttribute("loginMember");
+
+        // 로그인 확인
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+
+        // 기존 예약 조회
+        Reservation existingReservation =
+                reservationService.findById(reservation.getId());
+
+        // 예약 존재 여부 확인
+        if (existingReservation == null) {
+
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "존재하지 않는 예약입니다."
+            );
+
+            return "redirect:/myreservations";
+        }
+
+        // 관리자 또는 예약자 본인만 수정 가능
+        if (!"admin".equals(loginMember.getUsername())
+                && !loginMember.getId().equals(existingReservation.getUserId())) {
+
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "본인의 예약만 수정할 수 있습니다."
+            );
+
+            return "redirect:/myreservations";
+        }
+
+        // 기존 예약의 userId를 사용
+        reservation.setUserId(existingReservation.getUserId());
 
         try {
 
@@ -160,19 +236,54 @@ public class RoomsController {
             return "updateReservation";
         }
 
-        // 예약 수정 메시지 전달
         redirectAttributes.addFlashAttribute(
                 "message",
                 "수정이 완료되었습니다."
         );
+
         return "redirect:/myreservations";
     }
 
     // 예약 취소
     @PostMapping("/reservation/cancel/{id}")
-    public String cancelReservation(@PathVariable Long id,
-                                    HttpSession session,
-                                    RedirectAttributes redirectAttributes) {
+    public String cancelReservation(
+            @PathVariable Long id,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
+        Users loginMember =
+                (Users) session.getAttribute("loginMember");
+
+        // 로그인 확인
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+
+        Reservation reservation =
+                reservationService.findById(id);
+
+        // 예약 존재 여부
+        if (reservation == null) {
+
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "존재하지 않는 예약입니다."
+            );
+
+            return "redirect:/myreservations";
+        }
+
+        // 관리자 또는 예약자 본인만 취소 가능
+        if (!"admin".equals(loginMember.getUsername())
+                && !loginMember.getId().equals(reservation.getUserId())) {
+
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "본인의 예약만 취소할 수 있습니다."
+            );
+
+            return "redirect:/myreservations";
+        }
 
         reservationService.cancelReservation(id);
 
@@ -181,17 +292,11 @@ public class RoomsController {
                 "예약이 취소되었습니다."
         );
 
-        Users loginMember =
-                (Users) session.getAttribute("loginMember");
-
-        // 관리자 계정인 경우 관리자 페이지로 이동
-        if (loginMember != null &&
-                "admin".equals(loginMember.getUsername())) {
-
+        // 관리자가 취소했다면 관리자 페이지로
+        if ("admin".equals(loginMember.getUsername())) {
             return "redirect:/admin";
         }
 
-        // 일반 사용자는 내 예약현황으로 이동
         return "redirect:/myreservations";
     }
 
