@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>예약 수정</title>
+
 
     <style>
 
@@ -16,11 +20,13 @@
             color:#333;
         }
 
+
         /* 전체 영역 */
         .container{
             width:850px;
             margin:0 auto;
         }
+
 
         /* 제목 */
         h1{
@@ -33,6 +39,7 @@
             margin-bottom:15px;
         }
 
+
         /* 에러 메시지 */
         .error{
             background:#ffe5e5;
@@ -43,6 +50,7 @@
             text-align:center;
         }
 
+
         /* 예약 수정 폼 */
         .reservation-form{
             background:white;
@@ -51,6 +59,7 @@
             box-shadow:0 2px 10px rgba(0,0,0,0.1);
         }
 
+
         /* 회의실 정보 */
         .room-info{
             display:flex;
@@ -58,15 +67,18 @@
             margin-bottom:20px;
         }
 
+
         .room-info label{
             width:120px;
             font-weight:bold;
         }
 
+
         .room-info span{
             font-weight:bold;
             color:#4e73df;
         }
+
 
         /* 입력 영역 */
         .form-group{
@@ -75,10 +87,12 @@
             margin-bottom:18px;
         }
 
+
         .form-group label{
             width:120px;
             font-weight:bold;
         }
+
 
         .form-group input{
             padding:10px;
@@ -87,11 +101,13 @@
             font-size:14px;
         }
 
+
         /* 버튼 영역 */
         .button-area{
             text-align:center;
             margin-top:25px;
         }
+
 
         button{
             padding:10px 20px;
@@ -102,23 +118,28 @@
             font-weight:bold;
         }
 
+
         button[type="reset"]{
             background:#6c757d;
             color:white;
         }
+
 
         button[type="submit"]{
             background:#4e73df;
             color:white;
         }
 
+
         button[type="reset"]:hover{
             background:#555d63;
         }
 
+
         button[type="submit"]:hover{
             background:#365fc7;
         }
+
 
         /* 예약 현황 */
         .reservation-list{
@@ -128,10 +149,12 @@
             box-shadow:0 2px 10px rgba(0,0,0,0.1);
         }
 
+
         .reservation-list table{
             width:100%;
             border-collapse:collapse;
         }
+
 
         .reservation-list th{
             background:#4e73df;
@@ -139,15 +162,18 @@
             padding:12px;
         }
 
+
         .reservation-list td{
             border:1px solid #ddd;
             padding:12px;
             text-align:center;
         }
 
+
         .reservation-list tr:nth-child(even){
             background:#f8f9fa;
         }
+
 
         /* 메뉴 */
         .menu{
@@ -155,12 +181,14 @@
             margin-top:25px;
         }
 
+
         .menu a{
             text-decoration:none;
             color:#4e73df;
             font-weight:bold;
             margin:0 10px;
         }
+
 
         .menu a:hover{
             text-decoration:underline;
@@ -170,9 +198,11 @@
 
 </head>
 
+
 <body>
 
 <div class="container">
+
 
     <h1>예약 수정</h1>
 
@@ -244,6 +274,7 @@
             <label>시작 시간</label>
 
             <input type="time"
+                   id="startTime"
                    name="startTime"
                    th:value="${reservation.startTime}"
                    required>
@@ -257,6 +288,7 @@
             <label>종료 시간</label>
 
             <input type="time"
+                   id="endTime"
                    name="endTime"
                    th:value="${reservation.endTime}"
                    required>
@@ -270,8 +302,7 @@
                 초기화
             </button>
 
-            <button type="submit"
-                    onclick="return confirm('예약 내용을 수정하시겠습니까?');">
+            <button type="submit">
                 수정 완료
             </button>
 
@@ -283,15 +314,21 @@
     <!-- 예약 현황 -->
     <h2>예약 현황</h2>
 
+
     <div class="reservation-list">
 
         <table>
 
             <tr>
+
                 <th>예약일</th>
+
                 <th>시작시간</th>
+
                 <th>종료시간</th>
+
                 <th>예약자</th>
+
             </tr>
 
 
@@ -325,61 +362,150 @@
 
     </div>
 
+
 </div>
 
 
 <script>
 
+    const reserveDate =
+        document.getElementById("reserveDate");
+
+    const startTime =
+        document.getElementById("startTime");
+
+    const endTime =
+        document.getElementById("endTime");
+
+    const reservationForm =
+        document.querySelector(".reservation-form");
+
+
+    // 오늘 날짜를 yyyy-MM-dd 형식으로 가져오기
+    function getToday() {
+
+        const today = new Date();
+
+        const year =
+            today.getFullYear();
+
+        const month =
+            String(today.getMonth() + 1)
+                .padStart(2, "0");
+
+        const day =
+            String(today.getDate())
+                .padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    }
+
+
     // 오늘 이전 날짜 선택 불가
-    const today = new Date().toISOString().split("T")[0];
-
-    document.getElementById("reserveDate").min = today;
+    reserveDate.min = getToday();
 
 
-    // 예약 유효성 검사
-    const form = document.querySelector("form");
+    // 예약 시간 검증
+    function validateReservationTime() {
 
-    form.addEventListener("submit", function(e){
+        // 필수값이 아직 입력되지 않았다면 통과
+        if (!reserveDate.value ||
+            !startTime.value ||
+            !endTime.value) {
 
-        const reserveDate =
-            document.getElementById("reserveDate").value;
-
-        const start =
-            document.querySelector("[name='startTime']").value;
-
-        const end =
-            document.querySelector("[name='endTime']").value;
+            return true;
+        }
 
 
-        // 시작시간 >= 종료시간
-        if(start >= end){
+        const today = getToday();
+
+
+        // 오늘 날짜를 선택한 경우
+        if (reserveDate.value === today) {
+
+            const now = new Date();
+
+            const currentHour =
+                String(now.getHours())
+                    .padStart(2, "0");
+
+            const currentMinute =
+                String(now.getMinutes())
+                    .padStart(2, "0");
+
+            const currentTime =
+                `${currentHour}:${currentMinute}`;
+
+
+            // 현재 시간 이전이면 수정 불가
+            if (startTime.value < currentTime) {
+
+                alert("현재 시간 이후로 예약해주세요.");
+
+                return false;
+            }
+
+        }
+
+
+        // 시작시간이 종료시간보다 늦거나 같은 경우
+        if (startTime.value >= endTime.value) {
 
             alert("종료시간은 시작시간보다 늦어야 합니다.");
 
-            e.preventDefault();
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+    // 시작시간 변경
+    startTime.addEventListener("change", function () {
+
+        validateReservationTime();
+
+    });
+
+
+    // 종료시간 변경
+    endTime.addEventListener("change", function () {
+
+        validateReservationTime();
+
+    });
+
+
+    // 예약 날짜 변경
+    reserveDate.addEventListener("change", function () {
+
+        validateReservationTime();
+
+    });
+
+
+    // 수정 완료 버튼 클릭
+    reservationForm.addEventListener("submit", function (event) {
+
+        // 예약 시간 검증
+        if (!validateReservationTime()) {
+
+            event.preventDefault();
 
             return;
         }
 
 
-        // 오늘인데 현재시간보다 이전 예약 불가
-        const now = new Date();
-
-        const currentDate =
-            now.toISOString().split("T")[0];
-
-        const currentTime =
-            now.toTimeString().substring(0,5);
+        // 수정 확인
+        const confirmed =
+            confirm("예약 내용을 수정하시겠습니까?");
 
 
-        if(reserveDate === currentDate &&
-            start < currentTime){
+        if (!confirmed) {
 
-            alert("현재 시간보다 이전은 예약할 수 없습니다.");
+            event.preventDefault();
 
-            e.preventDefault();
-
-            return;
         }
 
     });

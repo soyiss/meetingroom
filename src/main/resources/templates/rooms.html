@@ -453,7 +453,119 @@
 
 </div>
 
+<script>
 
+    const reserveDate = document.getElementById("reserveDate");
+    const startTime = document.querySelector('input[name="startTime"]');
+    const endTime = document.querySelector('input[name="endTime"]');
+    const reservationForm = document.querySelector(".reservation-form");
+
+
+    // 오늘 날짜를 yyyy-MM-dd 형식으로 가져오기
+    function getToday() {
+
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    }
+
+
+    // 오늘 이전 날짜 선택 불가
+    reserveDate.min = getToday();
+
+
+    // 예약 시간 검증
+    function validateReservationTime() {
+
+        if (!reserveDate.value ||
+            !startTime.value ||
+            !endTime.value) {
+
+            return true;
+        }
+
+
+        const today = getToday();
+
+
+        // 오늘 날짜를 선택한 경우
+        if (reserveDate.value === today) {
+
+            const now = new Date();
+
+            const currentHour =
+                String(now.getHours()).padStart(2, "0");
+
+            const currentMinute =
+                String(now.getMinutes()).padStart(2, "0");
+
+            const currentTime =
+                `${currentHour}:${currentMinute}`;
+
+
+            // 현재 시간 이전이면 예약 불가
+            if (startTime.value < currentTime) {
+
+                alert("현재 시간 이후로 예약해주세요.");
+
+                return false;
+            }
+        }
+
+
+        // 시작시간이 종료시간보다 늦거나 같은 경우
+        if (startTime.value >= endTime.value) {
+
+            alert("종료시간은 시작시간보다 늦어야 합니다.");
+
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+    // 시작시간 변경
+    startTime.addEventListener("change", function () {
+
+        validateReservationTime();
+
+    });
+
+
+    // 종료시간 변경
+    endTime.addEventListener("change", function () {
+
+        validateReservationTime();
+
+    });
+
+
+    // 예약 날짜 변경
+    reserveDate.addEventListener("change", function () {
+
+        validateReservationTime();
+
+    });
+
+
+    // 예약하기 버튼을 눌렀을 때 최종 검증
+    reservationForm.addEventListener("submit", function (event) {
+
+        if (!validateReservationTime()) {
+
+            event.preventDefault();
+
+        }
+
+    });
+
+</script>
 </body>
 
 </html>
