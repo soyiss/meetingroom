@@ -168,17 +168,16 @@ public class RoomsController {
         return "redirect:/myreservations";
     }
 
-    // 삭제기능
-    @PostMapping("/reservation/delete/{id}")
-    public String deleteReservation(@PathVariable Long id,
+    // 예약 취소
+    @PostMapping("/reservation/cancel/{id}")
+    public String cancelReservation(@PathVariable Long id,
                                     RedirectAttributes redirectAttributes) {
 
-        reservationService.deleteReservation(id);
+        reservationService.cancelReservation(id);
 
-        // 예약 삭제 메시지 전달
         redirectAttributes.addFlashAttribute(
                 "message",
-                "삭제가 완료되었습니다."
+                "예약이 취소되었습니다."
         );
 
         return "redirect:/myreservations";

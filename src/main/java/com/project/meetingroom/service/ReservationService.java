@@ -54,8 +54,9 @@ public class ReservationService {
         reservationMapper.updateReservation(reservation);
     }
 
-    public void deleteReservation(Long id) {
-        reservationMapper.deleteReservation(id);
+    // 예약 취소
+    public void cancelReservation(Long id) {
+        reservationMapper.cancelReservation(id);
     }
 
 

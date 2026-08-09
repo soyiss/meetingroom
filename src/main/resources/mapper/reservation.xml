@@ -104,7 +104,6 @@
                  JOIN rooms r
                       ON a.room_id = r.id
         WHERE a.user_id = #{userId}
-          AND a.status = '예약완료'
         ORDER BY a.reserve_date, a.start_time
 
     </select>
@@ -160,14 +159,15 @@
     </select>
 
 
-    <delete id="deleteReservation"
+    <!-- 예약 취소 -->
+    <update id="cancelReservation"
             parameterType="long">
 
-        DELETE
-        FROM reservation
+        UPDATE reservation
+        SET status = '예약취소'
         WHERE id = #{id}
 
-    </delete>
+    </update>
 
     <!-- 전체 예약현황 조회 -->
     <select id="findAllReservations"

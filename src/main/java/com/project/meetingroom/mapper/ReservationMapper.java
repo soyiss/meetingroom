@@ -36,6 +36,6 @@ public interface ReservationMapper {
     // 예약 날짜, 시작시간, 종료시간 변경
     void updateReservation(Reservation reservation);
 
-    // 예약 삭제
-    void deleteReservation(Long id);
+    // 예약 취소
+    void cancelReservation(Long id);
 }

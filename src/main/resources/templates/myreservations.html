@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
-    <title>myreservation</title>
+
+    <title>내 예약현황</title>
+
 
     <style>
 
@@ -16,17 +20,20 @@
             color:#333;
         }
 
+
         /* 전체 영역을 가운데 정렬 */
         .container{
             width:1000px;
             margin:0 auto;
         }
 
+
         /* 제목 */
         h1{
             text-align:center;
             margin-bottom:25px;
         }
+
 
         /* 예약 수정/삭제 완료 메시지 */
         .message{
@@ -38,6 +45,7 @@
             margin-bottom:20px;
         }
 
+
         /* 예약 목록 카드 */
         .reservation-list{
             background:white;
@@ -46,12 +54,14 @@
             box-shadow:0 2px 10px rgba(0,0,0,0.1);
         }
 
+
         /* 테이블 */
         table{
             width:100%;
             border-collapse:collapse;
             background:white;
         }
+
 
         /* 테이블 헤더 */
         th{
@@ -60,6 +70,7 @@
             padding:12px;
         }
 
+
         /* 테이블 내용 */
         td{
             border:1px solid #ddd;
@@ -67,15 +78,18 @@
             text-align:center;
         }
 
+
         /* 짝수 행 배경색 */
         tr:nth-child(even){
             background:#f8f9fa;
         }
 
+
         /* 마우스를 올렸을 때 */
         tr:hover{
             background:#eef3ff;
         }
+
 
         /* 링크 기본 스타일 */
         a{
@@ -85,9 +99,11 @@
             margin-right:10px;
         }
 
+
         a:hover{
             text-decoration:underline;
         }
+
 
         /* 수정 / 삭제 버튼 */
         .action-button{
@@ -95,7 +111,12 @@
             padding:7px 13px;
             border-radius:5px;
             margin:0 2px;
+            border:none;
+            cursor:pointer;
+            font-size:14px;
+            font-weight:bold;
         }
+
 
         /* 수정 버튼 */
         .edit-button{
@@ -103,10 +124,12 @@
             color:white;
         }
 
+
         .edit-button:hover{
             background:#365fc7;
             text-decoration:none;
         }
+
 
         /* 삭제 버튼 */
         .delete-button{
@@ -114,16 +137,26 @@
             color:white;
         }
 
+
         .delete-button:hover{
             background:#bb2d3b;
             text-decoration:none;
         }
+
+
+        /* 예약취소 상태 */
+        .cancelled{
+            color:#999;
+            font-weight:bold;
+        }
+
 
         /* 메인으로 */
         .menu{
             text-align:center;
             margin-top:25px;
         }
+
 
         .menu a{
             color:#4e73df;
@@ -134,16 +167,22 @@
 
 </head>
 
+
 <body>
 
+
 <div class="container">
+
 
     <h1>내 예약현황</h1>
 
 
     <!-- 예약 수정/삭제 완료 메시지 -->
-    <div th:if="${message}" class="message">
+    <div th:if="${message}"
+         class="message">
+
         <p th:text="${message}"></p>
+
     </div>
 
 
@@ -153,50 +192,73 @@
         <table>
 
             <tr>
+
                 <th>회의실</th>
                 <th>예약일</th>
                 <th>시작시간</th>
                 <th>종료시간</th>
                 <th>상태</th>
                 <th>수정</th>
-                <th>삭제</th>
+                <th>예약취소</th>
+
             </tr>
 
 
             <tr th:each="r : ${reservations}">
 
+
                 <td th:text="${r.roomName}"></td>
+
 
                 <td th:text="${r.reserveDate}"></td>
 
+
                 <td th:text="${r.startTime}"></td>
+
 
                 <td th:text="${r.endTime}"></td>
 
-                <td th:text="${r.status}"></td>
 
-
-                <td>
-                    <a class="action-button edit-button"
-                       th:href="@{/reservation/update/{id}(id=${r.id})}">
-                        수정
-                    </a>
+                <!-- 예약취소 상태는 회색으로 표시 -->
+                <td th:classappend="${r.status == '예약취소'} ? 'cancelled' : ''"
+                    th:text="${r.status}">
                 </td>
 
 
+                <!-- 예약완료인 경우에만 수정 버튼 표시 -->
                 <td>
-                    <form th:action="@{/reservation/delete/{id}(id=${r.id})}"
+
+                    <a th:if="${r.status == '예약완료'}"
+                       class="action-button edit-button"
+                       th:href="@{/reservation/update/{id}(id=${r.id})}">
+
+                        예약수정
+
+                    </a>
+
+                </td>
+
+
+                <!-- 예약완료인 경우에만 예약취소 버튼 표시 -->
+                <td>
+
+                    <form th:if="${r.status == '예약완료'}"
+                          th:action="@{/reservation/cancel/{id}(id=${r.id})}"
                           method="post"
                           style="display:inline;">
 
                         <button type="submit"
                                 class="action-button delete-button"
-                                onclick="return confirm('정말 예약을 삭제하시겠습니까?');">
-                            삭제
+                                onclick="return confirm('예약을 취소하시겠습니까?');">
+
+                            예약취소
+
                         </button>
 
                     </form>
+
                 </td>
+
 
             </tr>
 
@@ -207,8 +269,10 @@
 
     <br>
 
+
     <!-- 메인으로 -->
     <div class="menu">
+
         <a href="/reservations">
             전체 예약현황
         </a>
@@ -216,9 +280,12 @@
         <a href="/">
             메인으로
         </a>
+
     </div>
 
+
 </div>
+
 
 </body>
 

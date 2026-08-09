@@ -75,7 +75,7 @@ Spring Boot와 PostgreSQL을 활용한 회의실 예약 웹 서비스입니다.
 
 ### 내 예약 현황
 
-![내 예약 현황](src/main/resources/static/images/my-reservation.png)
+![내 예약 현황](src/main/resources/static/images/my-reservation1.png)
 
 ### 전체 예약현황
 
