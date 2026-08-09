@@ -1,20 +1,20 @@
 INSERT INTO users(username, password)
-VALUES ('admin', '1234');
+VALUES ('admin', '$2a$10$MMQ7F91d9bEWe9NfblXes.FaO1.5NSWkzzYtMUxZsW0n8C3ujpu.m');
 
 INSERT INTO users(username, password)
-VALUES ('test1', '1234');
+VALUES ('test1', '$2a$10$MMQ7F91d9bEWe9NfblXes.FaO1.5NSWkzzYtMUxZsW0n8C3ujpu.m');
 
 INSERT INTO users(username, password)
-VALUES ('test2', '1234');
+VALUES ('test2', '$2a$10$MMQ7F91d9bEWe9NfblXes.FaO1.5NSWkzzYtMUxZsW0n8C3ujpu.m');
 
 INSERT INTO users(username, password)
-VALUES ('test3', '1234');
+VALUES ('test3', '$2a$10$MMQ7F91d9bEWe9NfblXes.FaO1.5NSWkzzYtMUxZsW0n8C3ujpu.m');
 
 INSERT INTO users(username, password)
-VALUES ('test4', '1234');
+VALUES ('test4', '$2a$10$MMQ7F91d9bEWe9NfblXes.FaO1.5NSWkzzYtMUxZsW0n8C3ujpu.m');
 
 INSERT INTO users(username, password)
-VALUES ('test5', '1234');
+VALUES ('test5', '$2a$10$MMQ7F91d9bEWe9NfblXes.FaO1.5NSWkzzYtMUxZsW0n8C3ujpu.m');
 
 
 

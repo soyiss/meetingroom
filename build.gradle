@@ -29,6 +29,9 @@ dependencies {
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	runtimeOnly 'org.postgresql:postgresql'
 
+	// 비밀번호 암호화
+	implementation 'org.springframework.security:spring-security-crypto'
+
 	// Lombok (getter/setter 자동생성으로 시간 절약)
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
