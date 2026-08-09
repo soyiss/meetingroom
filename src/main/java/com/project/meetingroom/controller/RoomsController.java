@@ -171,6 +171,7 @@ public class RoomsController {
     // 예약 취소
     @PostMapping("/reservation/cancel/{id}")
     public String cancelReservation(@PathVariable Long id,
+                                    HttpSession session,
                                     RedirectAttributes redirectAttributes) {
 
         reservationService.cancelReservation(id);
@@ -180,6 +181,17 @@ public class RoomsController {
                 "예약이 취소되었습니다."
         );
 
+        Users loginMember =
+                (Users) session.getAttribute("loginMember");
+
+        // 관리자 계정인 경우 관리자 페이지로 이동
+        if (loginMember != null &&
+                "admin".equals(loginMember.getUsername())) {
+
+            return "redirect:/admin";
+        }
+
+        // 일반 사용자는 내 예약현황으로 이동
         return "redirect:/myreservations";
     }
 

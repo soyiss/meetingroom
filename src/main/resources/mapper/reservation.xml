@@ -193,4 +193,27 @@
 
     </select>
 
+    <!-- 관리자 전체 예약현황 조회 -->
+    <select id="findAllReservationsForAdmin"
+            resultType="com.project.meetingroom.domain.Reservation">
+
+        SELECT
+            a.id,
+            a.room_id,
+            a.user_id,
+            a.reserve_date,
+            a.start_time,
+            a.end_time,
+            r.name AS roomName,
+            b.username,
+            a.status
+        FROM reservation a
+                 JOIN users b
+                      ON a.user_id = b.id
+                 JOIN rooms r
+                      ON a.room_id = r.id
+        ORDER BY a.reserve_date DESC, a.start_time
+
+    </select>
+
 </mapper>

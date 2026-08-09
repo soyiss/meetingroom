@@ -38,4 +38,7 @@ public interface ReservationMapper {
 
     // 예약 취소
     void cancelReservation(Long id);
+
+    // 관리자 전체 예약 조회
+    List<Reservation> findAllReservationsForAdmin();
 }

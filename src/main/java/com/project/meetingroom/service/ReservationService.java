@@ -59,5 +59,8 @@ public class ReservationService {
         reservationMapper.cancelReservation(id);
     }
 
+    public List<Reservation> findAllReservationsForAdmin() {
+        return reservationMapper.findAllReservationsForAdmin();
+    }
 
 }
