@@ -2,8 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>회의실 예약</title>
+
 
     <style>
 
@@ -16,11 +19,13 @@
             color:#333;
         }
 
+
         /* 전체 영역 */
         .container{
             width:850px;
             margin:0 auto;
         }
+
 
         /* 제목 */
         h1{
@@ -33,6 +38,7 @@
             margin-bottom:15px;
         }
 
+
         /* 에러 메시지 */
         .error{
             background:#ffe5e5;
@@ -43,6 +49,7 @@
             text-align:center;
         }
 
+
         /* 회의실 정보 카드 */
         .room-info{
             background:white;
@@ -52,10 +59,12 @@
             margin-bottom:20px;
         }
 
+
         .room-info table{
             width:100%;
             border-collapse:collapse;
         }
+
 
         .room-info th{
             width:150px;
@@ -64,11 +73,13 @@
             padding:12px;
         }
 
+
         .room-info td{
             padding:12px;
             text-align:center;
             border:1px solid #ddd;
         }
+
 
         /* 예약 폼 */
         .reservation-form{
@@ -78,6 +89,22 @@
             box-shadow:0 2px 10px rgba(0,0,0,0.1);
         }
 
+
+        /* 예약 입력 + 사진 영역 */
+        .reservation-content{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:40px;
+        }
+
+
+        /* 예약 입력 영역 */
+        .reservation-input{
+            flex:1;
+        }
+
+
         /* 입력 영역 */
         .form-group{
             display:flex;
@@ -85,10 +112,12 @@
             margin-bottom:18px;
         }
 
+
         .form-group label{
             width:120px;
             font-weight:bold;
         }
+
 
         .form-group input{
             padding:10px;
@@ -97,11 +126,30 @@
             font-size:14px;
         }
 
+
+        /* 회의실 사진 영역 */
+        .room-image-area{
+            width:280px;
+            text-align:center;
+        }
+
+
+        /* 회의실 사진 */
+        .room-image{
+            width:280px;
+            height:190px;
+            object-fit:cover;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
+        }
+
+
         /* 버튼 영역 */
         .button-area{
             text-align:center;
             margin-top:25px;
         }
+
 
         button{
             padding:10px 20px;
@@ -112,23 +160,28 @@
             font-weight:bold;
         }
 
+
         button[type="reset"]{
             background:#6c757d;
             color:white;
         }
+
 
         button[type="submit"]{
             background:#4e73df;
             color:white;
         }
 
+
         button[type="reset"]:hover{
             background:#555d63;
         }
 
+
         button[type="submit"]:hover{
             background:#365fc7;
         }
+
 
         /* 예약 현황 */
         .reservation-list{
@@ -138,10 +191,12 @@
             box-shadow:0 2px 10px rgba(0,0,0,0.1);
         }
 
+
         .reservation-list table{
             width:100%;
             border-collapse:collapse;
         }
+
 
         .reservation-list th{
             background:#4e73df;
@@ -149,15 +204,18 @@
             padding:12px;
         }
 
+
         .reservation-list td{
             border:1px solid #ddd;
             padding:12px;
             text-align:center;
         }
 
+
         .reservation-list tr:nth-child(even){
             background:#f8f9fa;
         }
+
 
         /* 메인으로 */
         .menu{
@@ -165,11 +223,13 @@
             margin-top:25px;
         }
 
+
         .menu a{
             text-decoration:none;
             color:#4e73df;
             font-weight:bold;
         }
+
 
         .menu a:hover{
             text-decoration:underline;
@@ -179,15 +239,20 @@
 
 </head>
 
+
 <body>
 
 <div class="container">
 
+
     <h1>회의실 예약</h1>
+
 
     <!-- 중복예약 등 오류메시지 -->
     <div th:if="${error}" class="error">
+
         <p th:text="${error}"></p>
+
     </div>
 
 
@@ -197,13 +262,20 @@
         <table>
 
             <tr>
+
                 <th>회의실</th>
+
                 <td th:text="${room.name}"></td>
+
             </tr>
 
+
             <tr>
+
                 <th>수용 인원</th>
+
                 <td th:text="${room.capacity} + '명'"></td>
+
             </tr>
 
         </table>
@@ -216,57 +288,114 @@
           method="post"
           class="reservation-form">
 
+
         <!-- 어느 회의실인지 같이 전송 -->
         <input type="hidden"
                name="roomId"
                th:value="${room.id}">
 
 
-        <div class="form-group">
+        <div class="reservation-content">
 
-            <label>예약 날짜</label>
 
-            <input type="date"
-                   name="reserveDate"
-                   id="reserveDate"
-                   required>
+            <!-- ========================= -->
+            <!-- 왼쪽 : 예약 입력 -->
+            <!-- ========================= -->
+
+            <div class="reservation-input">
+
+
+                <div class="form-group">
+
+                    <label>예약 날짜</label>
+
+                    <input type="date"
+                           name="reserveDate"
+                           id="reserveDate"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>시작 시간</label>
+
+                    <input type="time"
+                           name="startTime"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>종료 시간</label>
+
+                    <input type="time"
+                           name="endTime"
+                           required>
+
+                </div>
+
+
+                <!-- 버튼 -->
+                <div class="button-area">
+
+                    <button type="reset">
+                        초기화
+                    </button>
+
+                    <button type="submit">
+                        예약하기
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- 오른쪽 : 회의실 사진 -->
+            <!-- ========================= -->
+
+            <div class="room-image-area">
+
+
+                <!-- 소회의실 -->
+                <img th:if="${room.id == 1}"
+                     src="/images/room-a.jpg"
+                     alt="소회의실"
+                     class="room-image">
+
+
+                <!-- 중회의실 -->
+                <img th:if="${room.id == 2}"
+                     src="/images/room-b.jpg"
+                     alt="중회의실"
+                     class="room-image">
+
+
+                <!-- 대회의실 -->
+                <img th:if="${room.id == 3}"
+                     src="/images/room-c.jpg"
+                     alt="대회의실"
+                     class="room-image">
+
+
+                <!-- 세미나실 -->
+                <img th:if="${room.id == 4}"
+                     src="/images/room-d.jpg"
+                     alt="세미나실"
+                     class="room-image">
+
+
+            </div>
+
 
         </div>
 
-
-        <div class="form-group">
-
-            <label>시작 시간</label>
-
-            <input type="time"
-                   name="startTime"
-                   required>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>종료 시간</label>
-
-            <input type="time"
-                   name="endTime"
-                   required>
-
-        </div>
-
-
-        <div class="button-area">
-
-            <button type="reset">
-                초기화
-            </button>
-
-            <button type="submit">
-                예약하기
-            </button>
-
-        </div>
 
     </form>
 
@@ -274,15 +403,22 @@
     <!-- 예약 현황 -->
     <h2>예약 현황</h2>
 
+
     <div class="reservation-list">
+
 
         <table>
 
             <tr>
+
                 <th>예약일</th>
+
                 <th>시작</th>
+
                 <th>종료</th>
+
                 <th>예약자</th>
+
             </tr>
 
 
@@ -298,7 +434,9 @@
 
             </tr>
 
+
         </table>
+
 
     </div>
 
@@ -312,66 +450,9 @@
 
     </div>
 
+
 </div>
 
-
-<script>
-
-    // 오늘 이전 날짜 선택 불가
-    const today = new Date().toISOString().split("T")[0];
-
-    document.getElementById("reserveDate").min = today;
-
-
-    // 예약 유효성 검사
-    const form = document.querySelector("form");
-
-    form.addEventListener("submit", function(e){
-
-        const reserveDate =
-            document.getElementById("reserveDate").value;
-
-        const start =
-            document.querySelector("[name='startTime']").value;
-
-        const end =
-            document.querySelector("[name='endTime']").value;
-
-
-        // 시작시간 >= 종료시간
-        if(start >= end){
-
-            alert("종료시간은 시작시간보다 늦어야 합니다.");
-
-            e.preventDefault();
-
-            return;
-        }
-
-
-        // 오늘인데 현재시간보다 이전 예약 불가
-        const now = new Date();
-
-        const currentDate =
-            now.toISOString().split("T")[0];
-
-        const currentTime =
-            now.toTimeString().substring(0,5);
-
-
-        if(reserveDate === currentDate &&
-            start < currentTime){
-
-            alert("현재 시간보다 이전은 예약할 수 없습니다.");
-
-            e.preventDefault();
-
-            return;
-        }
-
-    });
-
-</script>
 
 </body>
 

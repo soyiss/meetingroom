@@ -383,7 +383,7 @@ DB에서 조회한 예약 데이터를 FullCalendar 이벤트로 변환하여
 회의실별 이미지와 수용 인원을 확인하고
 원하는 회의실을 선택할 수 있습니다.
 
-![메인 화면](src/main/resources/static/images/main.png)
+![메인 화면](src/main/resources/static/images/main1.png)
 
 ---
 
@@ -392,7 +392,7 @@ DB에서 조회한 예약 데이터를 FullCalendar 이벤트로 변환하여
 선택한 회의실의 예약 현황을 확인하고
 날짜와 시간을 선택하여 예약할 수 있습니다.
 
-![회의실 예약](src/main/resources/static/images/reservation1.png)
+![회의실 예약](src/main/resources/static/images/reservation.png)
 
 ---
 

@@ -50,19 +50,19 @@
         .room-container{
             display:flex;
             justify-content:center;
-            gap:25px;
-            flex-wrap:wrap;
+            gap:18px;
         }
 
         /* 회의실 카드 */
         .room-card{
-            width:270px;
+            width:240px;
             background:white;
             border-radius:12px;
             overflow:hidden;
             box-shadow:0 2px 10px rgba(0,0,0,0.1);
             text-align:center;
             transition:0.2s;
+            flex-shrink:0;
         }
 
         /* 마우스를 올렸을 때 */
@@ -175,6 +175,10 @@
                      src="/images/room-c.jpg"
                      alt="대회의실">
 
+                <!-- 회의실 D -->
+                <img th:if="${room.id == 4}"
+                     src="/images/room-d.jpg"
+                     alt="대회의실">
 
                 <!-- 회의실 정보 -->
                 <div class="room-info">

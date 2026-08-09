@@ -27,6 +27,9 @@ VALUES ('중회의실', 10);
 INSERT INTO rooms(name, capacity)
 VALUES ('대회의실', 30);
 
+INSERT INTO rooms(name, capacity)
+VALUES ('세미나실', 40);
+
 -- 예약 테스트 데이터
 -- 2026년 8월 전체에 골고루 분산
 
