@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.project.meetingroom.dto.LoginUser;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,14 +48,18 @@ public class HtmlController {
         Users loginMember = userService.loginSuccess(users);
 
         if (loginMember == null) {
-            model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            model.addAttribute(
+                    "error",
+                    "아이디 또는 비밀번호가 일치하지 않습니다."
+            );
 
             return "login";
         }
-        // 아이디 비밀번호가 존재한다면 세션에 로그인한 회원 정보를 저장한다.
-        // 비밀번호는 굳이 저장하지 않아도 된다.
 
-        session.setAttribute("loginMember", loginMember);
+        // 비밀번호를 제외한 로그인 정보만 세션에 저장
+        LoginUser loginUser = new LoginUser(loginMember);
+
+        session.setAttribute("loginMember", loginUser);
 
         // 로그인 세션(쿠키)의 유효시간을 30분으로 지정
         // 브라우저에 발급되는 JSESSIONID 쿠키가 30분간 활동이 없으면 자동 만료처리(자동 로그아웃)
