@@ -3,10 +3,10 @@ spring:
     name: meetingroom
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/meetingroom
+    url: ${DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 1234
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   thymeleaf:
     cache: false  # 개발 중엔 false로 해서 새로고침만으로 화면 반영
@@ -25,4 +25,4 @@ mybatis:
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
-  type-aliases-package: com.example.demo.domain
+  type-aliases-package: com.project.meetingroom.domain
