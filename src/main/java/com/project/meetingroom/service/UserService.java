@@ -27,12 +27,12 @@ public class UserService {
     public Users loginSuccess(Users users) {
 
         // 클라이언트가 작성한 아이디로 유저가 존재하는지 조회
-        Users db멤버 =
+        Users dbMember =
                 usersMapper.findByUsername(users.getUsername());
 
 
         // 아이디가 존재하지 않는 경우
-        if (db멤버 == null) {
+        if (dbMember == null) {
             return null;
         }
 
@@ -41,10 +41,10 @@ public class UserService {
         // DB에 저장된 BCrypt 비밀번호 비교
         if (passwordEncoder.matches(
                 users.getPassword(),
-                db멤버.getPassword())) {
+                dbMember.getPassword())) {
 
             // 비밀번호가 일치하면 회원정보 반환
-            return db멤버;
+            return dbMember;
         }
 
 
