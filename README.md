@@ -383,7 +383,7 @@ DB에서 조회한 예약 데이터를 FullCalendar 이벤트로 변환하여
 회의실별 이미지와 수용 인원을 확인하고
 원하는 회의실을 선택할 수 있습니다.
 
-![메인 화면](static/images/main.png)
+![메인 화면](src/main/resources/static/images/main.png)
 
 ---
 
@@ -392,7 +392,7 @@ DB에서 조회한 예약 데이터를 FullCalendar 이벤트로 변환하여
 선택한 회의실의 예약 현황을 확인하고
 날짜와 시간을 선택하여 예약할 수 있습니다.
 
-![회의실 예약](static/images/reservation.png)
+![회의실 예약](src/main/resources/static/images/reservation1.png)
 
 ---
 
@@ -401,7 +401,7 @@ DB에서 조회한 예약 데이터를 FullCalendar 이벤트로 변환하여
 기존 예약 정보를 확인하고
 예약 날짜와 시간을 수정할 수 있습니다.
 
-![예약 수정](static/images/reservation-update.png)
+![예약 수정](src/main/resources/static/images/reservation-update.png)
 
 ---
 
@@ -410,7 +410,7 @@ DB에서 조회한 예약 데이터를 FullCalendar 이벤트로 변환하여
 로그인한 사용자의 예약 내역을 확인하고
 예약 수정 및 예약 취소를 수행할 수 있습니다.
 
-![내 예약 현황](static/images/my-reservation.png)
+![내 예약 현황](src/main/resources/static/images/my-reservation1.png)
 
 ---
 
@@ -422,7 +422,7 @@ FullCalendar를 이용하여 전체 예약 현황을
 예약자별 색상을 적용하여
 서로 다른 사용자의 예약을 쉽게 구분할 수 있습니다.
 
-![전체 예약 현황](static/images/reservations.png)
+![전체 예약 현황](src/main/resources/static/images/reservations.png)
 
 ---
 
@@ -431,7 +431,7 @@ FullCalendar를 이용하여 전체 예약 현황을
 관리자 계정으로 로그인하면
 전체 예약 내역을 확인하고 예약을 취소할 수 있습니다.
 
-![관리자 페이지](static/images/admin.png)
+![관리자 페이지](src/main/resources/static/images/admin.png)
 
 ---
 
