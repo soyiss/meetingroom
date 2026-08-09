@@ -185,11 +185,17 @@
 
 
                 <td>
-                    <a class="action-button delete-button"
-                       th:href="@{/reservation/delete/{id}(id=${r.id})}"
-                       onclick="return confirm('정말 예약을 삭제하시겠습니까?');">
-                        삭제
-                    </a>
+                    <form th:action="@{/reservation/delete/{id}(id=${r.id})}"
+                          method="post"
+                          style="display:inline;">
+
+                        <button type="submit"
+                                class="action-button delete-button"
+                                onclick="return confirm('정말 예약을 삭제하시겠습니까?');">
+                            삭제
+                        </button>
+
+                    </form>
                 </td>
 
             </tr>
@@ -203,7 +209,13 @@
 
     <!-- 메인으로 -->
     <div class="menu">
-        <a href="/">메인으로</a>
+        <a href="/reservations">
+            전체 예약현황
+        </a>
+
+        <a href="/">
+            메인으로
+        </a>
     </div>
 
 </div>

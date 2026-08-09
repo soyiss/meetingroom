@@ -105,6 +105,25 @@ public class RoomsController {
         return "myreservations";
     }
 
+    // 전체 예약현황 화면
+    @GetMapping("/reservations")
+    public String allReservations(HttpSession session,
+                                  Model model) {
+
+        // 로그인 안 되어 있으면 로그인 페이지
+        if (session.getAttribute("loginMember") == null) {
+            return "redirect:/login";
+        }
+
+        // 전체 회의실의 예약 현황 조회
+        model.addAttribute(
+                "reservations",
+                reservationService.findAllReservations()
+        );
+
+        return "calendar";
+    }
+
     // 수정화면으로 이동
     @GetMapping("/reservation/update/{id}")
     public String updateReservation(@PathVariable Long id,
@@ -150,8 +169,9 @@ public class RoomsController {
     }
 
     // 삭제기능
-    @GetMapping("/reservation/delete/{id}")
-    public String deleteReservation(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    @PostMapping("/reservation/delete/{id}")
+    public String deleteReservation(@PathVariable Long id,
+                                    RedirectAttributes redirectAttributes) {
 
         reservationService.deleteReservation(id);
 
@@ -160,6 +180,7 @@ public class RoomsController {
                 "message",
                 "삭제가 완료되었습니다."
         );
+
         return "redirect:/myreservations";
     }
 

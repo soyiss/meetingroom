@@ -18,6 +18,9 @@ public interface ReservationMapper {
     // 선택한 회의실의 예약 현황 전체 조회
     List<Reservation> findReservationsByRoomId(Long id);
 
+    // 전체 회의실의 예약 현황 조회
+    List<Reservation> findAllReservations();
+
     // 로그인한 사용자의 예약 목록 조회 (내 예약현황)
     List<Reservation> findByUserId(@Param("userId") Long userId);
 

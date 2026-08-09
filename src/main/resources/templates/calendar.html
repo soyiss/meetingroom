@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>전체 예약현황</title>
+
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.css"
+          rel="stylesheet">
+
+
+    <style>
+
+        /* 전체 화면 */
+        body{
+            font-family: Arial, sans-serif;
+            background:#f5f7fb;
+            margin:0;
+            padding:40px;
+            color:#333;
+        }
+
+
+        /* 전체 영역 */
+        .container{
+            width:1000px;
+            margin:0 auto;
+        }
+
+
+        /* 제목 */
+        h1{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+
+        /* 캘린더 카드 */
+        .calendar-box{
+            background:white;
+            padding:25px;
+            border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+
+        /* 캘린더 */
+        #calendar{
+            width:100%;
+        }
+
+
+        /* 예약 */
+        .fc-event{
+            cursor:pointer;
+            border:none;
+            padding:3px;
+        }
+
+
+        /* 예약자별 색상 범례 */
+        .legend{
+            background:white;
+            margin-top:15px;
+            padding:15px 20px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.08);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            gap:20px;
+        }
+
+
+        /* 예약자 제목 */
+        .legend-title{
+            font-weight:bold;
+            margin-right:5px;
+        }
+
+
+        /* 예약자 목록 가로 정렬 */
+        #legend-list{
+            display:flex;
+            align-items:center;
+            gap:20px;
+        }
+
+
+        /* 예약자 */
+        .legend-item{
+            display:flex;
+            align-items:center;
+            gap:5px;
+        }
+
+
+        /* 예약자 색상 */
+        .legend-color{
+            width:14px;
+            height:14px;
+            border-radius:50%;
+            display:inline-block;
+        }
+
+
+        /* 메뉴 */
+        .menu{
+            text-align:center;
+            margin-top:25px;
+        }
+
+
+        .menu a{
+            text-decoration:none;
+            color:#4e73df;
+            font-weight:bold;
+            margin:0 10px;
+        }
+
+
+        .menu a:hover{
+            text-decoration:underline;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>전체 예약현황</h1>
+
+
+    <div class="calendar-box">
+
+        <!-- FullCalendar가 표시될 영역 -->
+        <div id="calendar"></div>
+
+    </div>
+
+
+    <!-- 예약자별 색상 범례 -->
+    <div class="legend">
+
+        <span class="legend-title">
+            예약자
+        </span>
+
+        <div id="legend-list"></div>
+
+    </div>
+
+
+    <!-- 메뉴 -->
+    <div class="menu">
+
+        <a href="/">
+            메인으로
+        </a>
+
+        <a href="/myreservations">
+            내 예약현황
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
+
+
+<script th:inline="javascript">
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+        const calendarEl =
+            document.getElementById('calendar');
+
+
+        /*
+         * DB에서 가져온 예약 데이터
+         *
+         * Controller에서
+         * model.addAttribute("reservations", ...)
+         * 로 전달한 데이터를 가져온다.
+         */
+        const reservations =
+            /*[[${reservations}]]*/ [];
+
+
+        /*
+         * 사용자별 색상
+         *
+         * 같은 사용자는 항상 같은 색상을 사용한다.
+         */
+        function getUserColor(username) {
+
+
+            const colors = [
+
+                '#2563EB',  // 파랑
+                '#16A34A',  // 초록
+                '#EA580C',  // 주황
+                '#9333EA',  // 보라
+                '#DC2626',  // 빨강
+                '#0891B2',  // 청록
+                '#CA8A04',  // 노랑
+                '#DB2777'   // 분홍
+
+            ];
+
+
+            /*
+             * 사용자 이름을 숫자로 변환해서
+             * 같은 사용자는 항상 같은 색상을 사용하도록 한다.
+             */
+            let hash = 0;
+
+
+            for(let i = 0; i < username.length; i++){
+
+                hash =
+                    username.charCodeAt(i)
+                    + ((hash << 5) - hash);
+
+            }
+
+
+            const index =
+                Math.abs(hash) % colors.length;
+
+
+            return colors[index];
+
+        }
+
+
+
+        /*
+         * 예약자별 색상 범례 생성
+         */
+
+        const legendList =
+            document.getElementById('legend-list');
+
+
+        /*
+         * 예약자 이름만 가져온 후
+         * 중복 제거
+         */
+        const usernames = [
+
+            ...new Set(
+
+                reservations.map(function(reservation) {
+
+                    return reservation.username;
+
+                })
+
+            )
+
+        ];
+
+
+        /*
+         * 예약자별 범례 생성
+         */
+
+        usernames.forEach(function(username) {
+
+
+            const color =
+                getUserColor(username);
+
+
+            const item =
+                document.createElement('span');
+
+
+            item.className =
+                'legend-item';
+
+
+            item.innerHTML =
+
+                '<span class="legend-color" '
+                + 'style="background-color:'
+                + color
+                + ';"></span>'
+
+                + '<span>'
+                + username
+                + '</span>';
+
+
+            legendList.appendChild(item);
+
+        });
+
+
+
+        /*
+         * 예약 데이터를
+         * FullCalendar에서 사용하는 형식으로 변환
+         */
+
+        const events = reservations.map(function(reservation) {
+
+
+            /*
+             * 예약자별 색상
+             */
+            const userColor =
+                getUserColor(reservation.username);
+
+
+            return {
+
+
+                /*
+                 * 캘린더에는 회의실 이름만 표시
+                 */
+                title:
+                reservation.roomName,
+
+
+                /*
+                 * 예약 날짜 + 시작시간
+                 */
+                start:
+                    reservation.reserveDate
+                    + "T"
+                    + reservation.startTime,
+
+
+                /*
+                 * 예약 날짜 + 종료시간
+                 */
+                end:
+                    reservation.reserveDate
+                    + "T"
+                    + reservation.endTime,
+
+
+                /*
+                 * 예약자별 색상
+                 */
+                backgroundColor:
+                userColor,
+
+
+                borderColor:
+                userColor,
+
+
+                /*
+                 * 클릭했을 때 사용할 예약자 정보
+                 */
+                extendedProps: {
+
+                    username:
+                    reservation.username
+
+                }
+
+            };
+
+        });
+
+
+
+        /*
+         * FullCalendar 생성
+         */
+
+        const calendar =
+            new FullCalendar.Calendar(
+
+                calendarEl,
+
+                {
+
+
+                    /* 한국어 */
+                    locale: 'ko',
+
+
+                    /* 월간 달력 */
+                    initialView: 'dayGridMonth',
+
+
+                    /* 화면 크기에 맞게 */
+                    height: 'auto',
+
+
+                    /*
+                     * 캘린더 상단 버튼
+                     */
+                    headerToolbar: {
+
+                        left:
+                            'prev,next today',
+
+                        center:
+                            'title',
+
+                        right:
+                            'dayGridMonth,timeGridWeek'
+
+                    },
+
+
+                    /*
+                     * 예약 데이터
+                     */
+                    events:
+                    events,
+
+
+                    /*
+                     * 예약 클릭
+                     */
+                    eventClick:
+                        function(info) {
+
+
+                            /*
+                             * 시작 시간
+                             */
+                            const startTime =
+                                info.event.start.toLocaleTimeString(
+                                    'ko-KR',
+                                    {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }
+                                );
+
+
+                            /*
+                             * 종료 시간
+                             */
+                            let endTime = '';
+
+
+                            if(info.event.end){
+
+                                endTime =
+                                    info.event.end.toLocaleTimeString(
+                                        'ko-KR',
+                                        {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }
+                                    );
+
+                            }
+
+
+                            /*
+                             * 예약 정보 표시
+                             */
+                            alert(
+
+                                "회의실 : "
+                                + info.event.title
+
+                                + "\n예약자 : "
+                                + info.event.extendedProps.username
+
+                                + "\n예약시간 : "
+                                + startTime
+                                + " ~ "
+                                + endTime
+
+                            );
+
+                        }
+
+                }
+
+            );
+
+
+        /*
+         * 캘린더 화면 출력
+         */
+        calendar.render();
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

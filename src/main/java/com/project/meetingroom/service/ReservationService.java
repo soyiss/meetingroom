@@ -28,6 +28,12 @@ public class ReservationService {
         return reservationMapper.findReservationsByRoomId(id);
     }
 
+
+    // 전체 회의실의 예약 현황 조회
+    public List<Reservation> findAllReservations() {
+        return reservationMapper.findAllReservations();
+    }
+
     public List<Reservation> myReserve(Long userId) {
         return reservationMapper.findByUserId(userId);
     }
